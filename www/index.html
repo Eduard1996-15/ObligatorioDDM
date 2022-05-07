@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <link rel="icon" href="data:,">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio integrador - APP Recetas</title>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    
+
+</head>
+
+<body>
+    <ion-app>
+        <ion-router id="router">
+            <ion-route url="/" component="pantalla-home"></ion-route>
+            <ion-route url="/calculadora" component="pantalla-calculadora"></ion-route>
+            <ion-route url="/login" component="pantalla-login"></ion-route>
+            <ion-route url="/registro" component="pantalla-registro"></ion-route>
+            <ion-route url="/detalles" component="pantalla-Detalles"></ion-route>
+            <ion-route url="/agregarEnvio" component="pantalla-agregarEnvio"></ion-route>
+            <ion-route url="/listaEnvios" component="pantalla-ListaEnvios"></ion-route>
+            <ion-route url="/compartir" component="pantalla-compartir"></ion-route>
+            <ion-route url="/GastoTotalEnvio" component="pantalla-GastoTotalEnvio"></ion-route>
+            <ion-route url="/ciudadCercana" component="pantalla-ciudadCercana"></ion-route>
+            <ion-route url="/logout" component="pantalla-logout"></ion-route>
+        </ion-router>
+        <ion-nav ></ion-nav>
+
+        <ion-menu id="menu" content-id="menu-content">
+            <ion-header>
+                <ion-toolbar color="primary">
+                    <ion-title>Start Menu</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <ion-list>
+                    <ion-item id="btnMenuHome" onclick="cerrarMenu()"        href="/">Home</ion-item>
+                    <ion-item id="btnMenuLogin" onclick="cerrarMenu()"       href="/login">Ingresar</ion-item>
+                    <ion-item id="btnMenuRegistro" onclick="cerrarMenu()"     href="/registro">Registrarse</ion-item>
+                    <ion-item id="btnMenuCalculadoraDistancia" onclick="cerrarMenu()"  href="/calculadora">Calculadora de Distancia</ion-item>
+                    <ion-item id="btnMenuagregarEnvio" onclick="cerrarMenu()"          href="/agregarEnvio">Agregar Envio</ion-item>
+                    <ion-item id="btnMenuListaEnvio" onclick="cerrarMenu()"      href="/listaEnvios">Lista de Envios</ion-item>
+                    <ion-item id="btnMenuGastoTotalEnvio" onclick="cerrarMenu()" href="/GastoTotalEnvio">Gasto Total de Envio</ion-item>
+                    <ion-item id="btnMenuciudadCercana" onclick="cerrarMenu()"   href="/ciudadCercana">Ciudad Cercana</ion-item>
+                    <ion-item id="btnMenuLogout" onclick="cerrarMenu()">Cerrar Sesión</ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-menu>
+        <div  id="menu-content" ></div>
+
+                     
+                        <pantalla-ciudadCercana id="pantalla-ciudadCercana" class="ion-page">
+                            <ion-header>
+                                <ion-toolbar>
+                                    <ion-buttons slot="start">
+                                        <ion-menu-button></ion-menu-button>
+                                    </ion-buttons>
+                                    <ion-title>Ciudad Mas Cercana</ion-title>
+                                </ion-toolbar>
+                            </ion-header>
+                            <ion-content>
+                                <div id="contenedorMapa1" style="height: 500px;"></div>
+                                <p id="pciudadCercana"><strong></strong></p>
+                            </ion-content>
+                        </pantalla-ciudadCercana>
+                        
+
+ <!--GASTO TOTAL DE ENVIOS-->           
+                        <pantalla-GastoTotalEnvio id="pantalla-GastoTotalEnvio" class="ion-page">
+                            <ion-header>
+                                <ion-toolbar>
+                                    <ion-buttons slot="start">
+                                        <ion-menu-button></ion-menu-button>
+                                    </ion-buttons>
+                                    <ion-title>Monto Total Gastado</ion-title>
+                                </ion-toolbar>
+                            </ion-header>
+                            <ion-content>
+                                <h2 id="pMensajeMontoTotal"></h2>
+                                
+                            </ion-content>
+                        </pantalla-GastoTotalEnvio>
+
+ <!--COMPARTIR DETALLES -->                      
+  <pantalla-Compartir id="pantalla-compartir" class="ion-page">
+                            <ion-header>
+                                <ion-toolbar>
+                                    <ion-buttons slot="start">
+                                        <ion-menu-button></ion-menu-button>
+                                    </ion-buttons>
+                                    <ion-title>compartir</ion-title>
+                                </ion-toolbar>
+                            </ion-header>
+                            <ion-content>
+
+                                comparte con tds las apps del dispositivo
+                                <p id="pMensajeCompartir"></p>
+                            </ion-content>
+    </pantalla-Compartir>
+
+<!--DETALLES-->
+        <pantalla-Detalles id="pantalla-Detalles" class="ion-page">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>detalles</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <table id="tablaDetalles" border="1">
+                    <thead>
+                        <tr>
+                            <th>id usuario</th>
+                            <th>id ciudad destino</th>
+                            <th>id ciudad origen</th>
+                            <th> peso</th>
+                            <th> distancia</th>
+                            <th> precio</th>
+                            <th>id categoria</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodydetalles"></tbody>
+                </table>
+                
+                <ion-button color="warning" expand="block" onclick="compartirEnvio()">Compartir Envio</ion-button>
+                <p id="pMensajedetalle"></p>
+            </ion-content>
+        </pantalla-Detalles>
+
+<!--LISTADO DE ENVIOS-->
+        <pantalla-ListaEnvios id="pantalla-ListaEnvios" class="ion-page">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Lista Envios</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <table id="tablaEnvios" border="1">
+                    <thead>
+                        <tr>
+                            <th>ciudad origen</th>
+                            <th>ciudad destino</th>
+                            <th> precio</th>
+                            <th> categoria</th>
+                            <th> detalles</th>
+                            <th> Eliminar </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaTbodyenvios">
+
+                    </tbody>
+                </table><br><br>
+
+                
+
+                <p id="pMensajeLista"></p>
+            </ion-content>
+        </pantalla-ListaEnvios>
+
+<!--AGREGAR ENVIOS-->
+        <pantalla-agregarEnvio id="pantalla-agregarEnvio" class="ion-page">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Agregar Envios</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+
+                <label for="sCiudadOrigen">Ciudad Origen</label>
+                <select required class="sCiudadOrigen" id="sCiudadOrigen"></select><br><br>
+
+                <label for="sCiudadDestino">Ciudad Destino</label>
+                <select class="sCiudadDestino" required id="sCiudadDestino"></select><br><br>
+
+                <label for="sCategoria">Categoria</label>
+                <select required class="sCategoria" id="sCategoria"></select><br><br>
+
+                <label for="txtPeso">Peso:</label>
+                <input type="number" required name="txtPeso" id="txtPeso"><br>
+
+                <input type="button" value="Enviar" id="btnEnviar"><br><hr>
+                <div id="contenedorEnvios" style="height: 500px;"></div>
+               
+
+                <p id="pMensajeAgrgarenvios"></p><br>
+            </ion-content>
+        </pantalla-agregarEnvio>
+
+<!--CALCULADORA -->
+        <pantalla-calculadora id="pantalla-calculadora" class="ion-page">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>calculadora</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content >
+               <p id="pMensajecalculadora"></p>
+                 <label for="slcCiudadOrigen">Ciudad Origen: </label>
+                <select class="slcCiudadOrigen" required id="slcCiudadOrigen">
+                  </select><br><br>
+                  <label for="slcCiudadDestino">Ciudad Destino: </label>
+                <select class="slcCiudadDestino" required id="slcCiudadDestino">
+                    </select><br><br>
+                <input type="button" value="Calcular distancia" id="btnCalcular">
+                <br><br>
+                <hr>
+                <div id="contenedorMapa" style="height: 500px;"></div>
+
+                
+            </ion-content>
+        </pantalla-calculadora>
+
+<!--REGISTRO USUARIO-->
+        <pantalla-registro id="pantalla-registro" class="ion-page">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Registro</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <label for="txtRegistroUsuario">Usuario</label>
+                <input type="text" id="txtRegistroUsuario">
+                <br><br>
+                <label for="txtRegistroPassword">Password</label>
+                <input type="password" id="txtRegistroPassword" required>
+                <br><br>
+                <input type="button" value="Registrarse" required id="btnRegistro">
+                <br>
+                <p id="pRegistroMensajes"></p>
+            </ion-content>
+        </pantalla-registro>
+<!--LOGUEO-->
+        <pantalla-login id="pantalla-login" class="ion-page">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Login</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <label  for="txtLoginUsuario">Usuario</label>
+                <input type="text"  id="txtLoginUsuario" required>
+                <br><br>
+                <label  for="txtLoginPassword">Password</label>
+                <input type="password" id="txtLoginPassword" required>
+                <br><br>
+                <input type="button" value="Iniciar Sesión" id="btnLogin">
+                <br>
+                <p id="pMensajeLoguin"></p><br>
+            </ion-content>
+        </pantalla-login>
+
+<!--HOME -->
+        <pantalla-home id="pantalla-home" class="ion-page">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Home</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <h1>Inicio</h1>
+            </ion-content>
+        </pantalla-home>
+
+<!--SALIR -->
+<pantalla-logout id="pantalla-logout" class="ion-page"></pantalla-logout>
+
+    </ion-app>
+    <script src="capacitor.js"></script>
+    <script type="text/javascript" src="js/clases.js"></script>
+    <script type="text/javascript" src="js/codigo.js"></script>
+</body>
+
+</html>
